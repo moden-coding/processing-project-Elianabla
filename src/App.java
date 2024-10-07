@@ -12,6 +12,8 @@ public class App extends PApplet {
     int costbox3 = 600;
     int costbox4 = 900;
     int costbox5 = 1200;
+    int costbox6 = 2000;
+    int costbox7 = 3500;
     int costbox9 = 10000;
     int costbox10 = 20000;
     int scene = 0;
@@ -174,6 +176,22 @@ public class App extends PApplet {
 
         square(575, 270, 95);
 
+        if (score >= costbox6) {
+            fill(140, 255, 95);
+        } else {
+            fill(255);
+        }
+
+        square(680, 270, 95);
+
+        if (score >= costbox7) {
+            fill(140, 255, 95);
+        } else {
+            fill(255);
+        }
+
+        square(575, 375, 95);
+
         if (score >= costbox9) {
             fill(140, 255, 140);
         } else {
@@ -204,6 +222,8 @@ public class App extends PApplet {
         text("Cookies increase \n by 3 cookies \nper click \nCost: " + costbox3, 575, 185);
         text("Increase cookies \n gained per \n second by 1 \n Cost: " + costbox4, 680, 185);
         text("Cookies increase \n by 5 cookies \n per click \n Cost: " + costbox5, 575, 290);
+        text("Increase cookies \n gained per \n second by 3 \n Cost: " + costbox6, 680, 290);
+        text("Cookies increase \n by 7 cookies \nper click \n Cost: " + costbox7, 575, 395);
 
         text("Change \nbackground \n color \nCost: " + costbox9, 575, 500);
         text("Change cookie \n kind \n \n Cost: " + costbox10, 680, 500);
@@ -212,46 +232,65 @@ public class App extends PApplet {
 
     public void upgradePressed(int x, int y) {
 
-        if (score >= costbox1 && x >= 575 && x <= 670 && y >= 60 && y <= 155) {
-            fill(230);
+        if (checkBoxDimensions(score, costbox1, 575, 60)) {
             cookiesPerClick += 1;
             score -= costbox1; // makes the score decrease by the amount the upgrade was bought for
             costbox1 *= 1.2; // makes the cost go up by 100 each time its purchased
 
         }
-        if (score >= costbox2 && x >= 680 && x <= 775 && y >= 60 && y <= 155) {
+        if (checkBoxDimensions(score, costbox2, 680, 60)) {
             cookiesGainedPerSec += 0.5;
             score -= costbox2;
             costbox2 *= 1.3;
         }
 
-        if (score >= costbox3 && x >= 575 && x <= 670 && y >= 165 && y <= 260) {
+        if (checkBoxDimensions(score, costbox3, 575, 165)) {
             cookiesPerClick += 3;
             score -= costbox3;
             costbox3 *= 1.4;
         }
 
-        if (score >= costbox4 && x >= 680 && x <= 775 && y >= 165 && y <= 260) {
+        if (checkBoxDimensions(score, costbox4, 680, 165)) {
             cookiesGainedPerSec += 1;
             score -= costbox4;
             costbox4 *= 1.5;
         }
 
-        if (score >= costbox5 && x >= 575 && x <= 680 && y >= 270 && y <= 365) {
+        if (checkBoxDimensions(score, costbox5, 575, 270)) {
             cookiesPerClick += 5;
             score -= costbox5;
             costbox5 *= 1.5;
         }
+        if (checkBoxDimensions(score, costbox6, 680, 270)) {
+            cookiesGainedPerSec += 3;
+            score -= costbox6;
+            costbox6 *= 1.5;
+        }
+        if (checkBoxDimensions(score, costbox7, 575, 375)) {
+            cookiesPerClick += 7;
+            score -= costbox7;
+            costbox7 *= 1.5;
+        }
 
-        if (score >= costbox9 && x >= 575 && x <= 670 && y >= 480 && y <= 575) {
+        if (checkBoxDimensions(score, costbox9, 575, 480)) {
             bgColor = color(random(0, 256), random(0, 256), random(0, 256));
             score -= costbox9;
             costbox9 += 600;
         }
-        if (score >= costbox10 && x >= 680 && x <= 775 && y >= 480 && y <= 575) {
+
+        if (checkBoxDimensions(score, costbox10, 775, 480)) {
             randomCookie();
             score -= costbox10;
             costbox10 += 1000;
+        }
+    }
+
+
+    public boolean checkBoxDimensions(double s, int c, int xPos, int yPos) {
+        if (s >= c && mouseX >= xPos && mouseY >= yPos && mouseY <= yPos + 95) {
+            return true;
+        } else {
+            return false;
         }
     }
 
