@@ -2,6 +2,7 @@ import processing.core.*;
 
 public class App extends PApplet {
     double score = 0;
+    double cookiesTotal = 0;
     double cookiesPerClick = 1;
     PImage cookieclick;
     int row = 0;
@@ -14,8 +15,9 @@ public class App extends PApplet {
     int costbox5 = 1200;
     int costbox6 = 2000;
     int costbox7 = 3500;
+    int costbox8 = 5000;
     int costbox9 = 10000;
-    int costbox10 = 20000;
+    int costbox10 = 15000;
     int scene = 0;
     int lastCookie = 0;
     PImage house;
@@ -40,7 +42,7 @@ public class App extends PApplet {
         cookie4 = loadImage("cookie 4.png");
         currentImage = cookieclick;
     }
-
+    
     public void draw() {
         if (scene == 0) {
             background(123, 63, 0); // sets a background color for the loading page
@@ -140,73 +142,27 @@ public class App extends PApplet {
     }
 
     public void checkForGreen() {
-        if (score >= costbox1) {
-            fill(140, 255, 140); // green when the upgrade is affordable
-        } else {
-            fill(255); // default white (box color)
-        }
-        square(575, 60, 95);
-
-        if (score >= costbox2) {
-            fill(140, 255, 140);
-        } else {
-            fill(255);
-        }
-        square(680, 60, 95);
-
-        if (score >= costbox3) {
-            fill(140, 255, 140);
-        } else {
-            fill(255);
-        }
-        square(575, 165, 95);
-
-        if (score >= costbox4) {
-            fill(140, 255, 140);
-        } else {
-            fill(255);
-        }
-        square(680, 165, 95);
-
-        if (score >= costbox5) {
-            fill(140, 255, 95);
-        } else {
-            fill(255);
-        }
-
-        square(575, 270, 95);
-
-        if (score >= costbox6) {
-            fill(140, 255, 95);
-        } else {
-            fill(255);
-        }
-
-        square(680, 270, 95);
-
-        if (score >= costbox7) {
-            fill(140, 255, 95);
-        } else {
-            fill(255);
-        }
-
-        square(575, 375, 95);
-
-        if (score >= costbox9) {
-            fill(140, 255, 140);
-        } else {
-            fill(255);
-        }
-        square(575, 480, 95);
-
-        if (score >= costbox10) {
-            fill(140, 255, 140);
-        } else {
-            fill(255);
-        }
-
-        square(680, 480, 95);
+       simplifyGreen(575, 60, costbox1);
+       simplifyGreen(680, 60, costbox2);
+       simplifyGreen(575, 165, costbox3);
+       simplifyGreen(680, 165, costbox4);
+       simplifyGreen(575, 270, costbox5);
+       simplifyGreen(680, 270, costbox6);
+       simplifyGreen(575, 375, costbox7);
+       simplifyGreen(680, 375, costbox8);
+       simplifyGreen(575, 480, costbox9);
+       simplifyGreen(680, 480, costbox10);
     }
+
+    public void simplifyGreen ( int x, int y, int cost){
+        if (score >= cost) {
+            fill(140,255,95);
+        } else {
+            fill(255);
+        } 
+        square(x,y,95);
+    } 
+    
 
     public void keyPressed() {
         if (key == 'p') {
@@ -224,7 +180,7 @@ public class App extends PApplet {
         text("Cookies increase \n by 5 cookies \n per click \n Cost: " + costbox5, 575, 290);
         text("Increase cookies \n gained per \n second by 3 \n Cost: " + costbox6, 680, 290);
         text("Cookies increase \n by 7 cookies \nper click \n Cost: " + costbox7, 575, 395);
-
+        text("Increase cookies \n gained per \n second by 5 \n Cost: " + costbox8, 680, 395);
         text("Change \nbackground \n color \nCost: " + costbox9, 575, 500);
         text("Change cookie \n kind \n \n Cost: " + costbox10, 680, 500);
 
@@ -272,22 +228,27 @@ public class App extends PApplet {
             costbox7 *= 1.5;
         }
 
+        if (checkBoxDimensions(score, costbox8, 680, 375)) {
+            cookiesGainedPerSec += 5;
+            score -= costbox8;
+            costbox8 *= 1.5;
+        }
+
         if (checkBoxDimensions(score, costbox9, 575, 480)) {
             bgColor = color(random(0, 256), random(0, 256), random(0, 256));
             score -= costbox9;
             costbox9 += 600;
         }
 
-        if (checkBoxDimensions(score, costbox10, 775, 480)) {
+        if (checkBoxDimensions(score, costbox10, 680, 480)) {
             randomCookie();
             score -= costbox10;
             costbox10 += 1000;
         }
     }
 
-
     public boolean checkBoxDimensions(double s, int c, int xPos, int yPos) {
-        if (s >= c && mouseX >= xPos && mouseY >= yPos && mouseY <= yPos + 95) {
+        if (s >= c && mouseX >= xPos && mouseX <= xPos + 95 && mouseY >= yPos && mouseY <= yPos + 95) {
             return true;
         } else {
             return false;
