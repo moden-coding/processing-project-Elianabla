@@ -25,6 +25,12 @@ public class App extends PApplet {
     PImage cookie3;
     PImage cookie4;
     PImage currentImage;
+    PImage angryCookie;
+    boolean isAngryCookieVisible = false;
+    float angryCookieX, angryCookieY;
+    int angryCookieDuration = 3000; // Duration of each phase (3 seconds)
+    int lastPhaseChangeTime = 0; // Tracks the last time the phase changed
+    int angryCookieStartTime = 0;
 
     public static void main(String[] args) {
         PApplet.main("App");
@@ -40,9 +46,14 @@ public class App extends PApplet {
         cookie2 = loadImage("cookie 2.png");
         cookie3 = loadImage("cookie 3.png");
         cookie4 = loadImage("cookie 4.png");
+        angryCookie = loadImage("angry cookie.png");
         currentImage = cookieclick;
+
     }
-    
+
+    //float spawnSpeed = 200;
+    //int frames = 0;
+
     public void draw() {
         if (scene == 0) {
             background(123, 63, 0); // sets a background color for the loading page
@@ -83,6 +94,23 @@ public class App extends PApplet {
             text("Cookies clicked: " + score, 10, 30);
             text(cookiesPerClick + " cookies per click", 10, 60);
             text(cookiesGainedPerSec + " cookies gained per second", 10, 90);
+
+            if (millis() - lastPhaseChangeTime >= angryCookieDuration) {
+                isAngryCookieVisible = !isAngryCookieVisible;  // toggles cookie to be visiable
+                lastPhaseChangeTime = millis();  // reset the timer
+                
+                if (isAngryCookieVisible) {
+                    // randomize the position when the angry cookie appears
+                    angryCookieX = random(100, 500);
+                    angryCookieY = random(100, 500);
+                }
+            }
+            
+            // display the angry cookie if it's visible
+            if (isAngryCookieVisible) {
+                image(angryCookie, angryCookieX, angryCookieY, 60, 60);
+            }
+    
 
             stroke(255);
             line(550, 0, 550, 600);
@@ -134,35 +162,47 @@ public class App extends PApplet {
             }
 
             upgradePressed(mouseX, mouseY);
+
         } else if (scene == 2) {
             if (mouseX >= 20 && mouseX <= 60 && mouseY >= 550 && mouseY <= 590) {
                 scene = 0;
             }
+    
         }
-    }
+
+        if (isAngryCookieVisible && mouseX >= angryCookieX && mouseX <= angryCookieX + 60 && mouseY >= angryCookieY && mouseY <= angryCookieY + 60) {
+            score *= 1.5;
+            isAngryCookieVisible = false;
+        }
+
+        if (isAngryCookieVisible && mouseX != angryCookieX && mouseX != angryCookieX + 60 && mouseY != angryCookieY && mouseY != angryCookieY + 60) {
+            score = 0;
+            isAngryCookieVisible = false;
+        }
+        }
+    
 
     public void checkForGreen() {
-       simplifyGreen(575, 60, costbox1);
-       simplifyGreen(680, 60, costbox2);
-       simplifyGreen(575, 165, costbox3);
-       simplifyGreen(680, 165, costbox4);
-       simplifyGreen(575, 270, costbox5);
-       simplifyGreen(680, 270, costbox6);
-       simplifyGreen(575, 375, costbox7);
-       simplifyGreen(680, 375, costbox8);
-       simplifyGreen(575, 480, costbox9);
-       simplifyGreen(680, 480, costbox10);
+        simplifyGreen(575, 60, costbox1);
+        simplifyGreen(680, 60, costbox2);
+        simplifyGreen(575, 165, costbox3);
+        simplifyGreen(680, 165, costbox4);
+        simplifyGreen(575, 270, costbox5);
+        simplifyGreen(680, 270, costbox6);
+        simplifyGreen(575, 375, costbox7);
+        simplifyGreen(680, 375, costbox8);
+        simplifyGreen(575, 480, costbox9);
+        simplifyGreen(680, 480, costbox10);
     }
 
-    public void simplifyGreen ( int x, int y, int cost){
+    public void simplifyGreen(int x, int y, int cost) {
         if (score >= cost) {
-            fill(140,255,95);
+            fill(140, 255, 95);
         } else {
             fill(255);
-        } 
-        square(x,y,95);
-    } 
-    
+        }
+        square(x, y, 95);
+    }
 
     public void keyPressed() {
         if (key == 'p') {
