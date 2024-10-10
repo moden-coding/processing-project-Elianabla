@@ -1,5 +1,7 @@
 import processing.core.*;
 
+// hi self code is done comments!!!!!!
+
 public class App extends PApplet {
     double score = 0;
     double cookiesTotal = 0;
@@ -28,9 +30,10 @@ public class App extends PApplet {
     PImage angryCookie;
     boolean isAngryCookieVisible = false;
     float angryCookieX, angryCookieY;
-    int angryCookieDuration = 3000; // Duration of each phase (3 seconds)
-    int lastPhaseChangeTime = 0; // Tracks the last time the phase changed
-    int angryCookieStartTime = 0;
+    int angryCookieDurationInbetween = 5000;
+    int angryCookieDuration = 15000; // duration of each phase (15 seconds)
+    int lastPhaseChangeTime = 0; // tracks the last time the phase changed
+  
 
     public static void main(String[] args) {
         PApplet.main("App");
@@ -50,9 +53,6 @@ public class App extends PApplet {
         currentImage = cookieclick;
 
     }
-
-    //float spawnSpeed = 200;
-    //int frames = 0;
 
     public void draw() {
         if (scene == 0) {
@@ -82,7 +82,7 @@ public class App extends PApplet {
             textSize(32);
             fill(193, 154, 107);
             text("Instructions: ", 290, 230);
-            text("Click the cookies and work on \n upgrading them by using the \n upgrades bar on the right.", 200,
+            text("Click the cookies and work on \n upgrading them by using the \n upgrades bar on the right. \n Click on all of the angry cookies \n Watch out!!", 200,
                     300);
 
         } else if (scene == 1) {
@@ -95,15 +95,16 @@ public class App extends PApplet {
             text(cookiesPerClick + " cookies per click", 10, 60);
             text(cookiesGainedPerSec + " cookies gained per second", 10, 90);
 
-            if (millis() - lastPhaseChangeTime >= angryCookieDuration) {
-                isAngryCookieVisible = !isAngryCookieVisible;  // toggles cookie to be visiable
-                lastPhaseChangeTime = millis();  // reset the timer
-                
-                if (isAngryCookieVisible) {
-                    // randomize the position when the angry cookie appears
-                    angryCookieX = random(100, 500);
-                    angryCookieY = random(100, 500);
-                }
+            int currentTime = millis();
+
+            if (!isAngryCookieVisible && ( millis()-lastPhaseChangeTime >= angryCookieDuration)){
+                isAngryCookieVisible = true;
+                angryCookieX = random(100, 500);
+                angryCookieY = random(100, 500);
+                lastPhaseChangeTime = currentTime;
+            } else if (isAngryCookieVisible && (millis() - lastPhaseChangeTime >= angryCookieDurationInbetween)) {
+                isAngryCookieVisible = false;  // toggles cookie to be visiable
+                lastPhaseChangeTime = currentTime;  // reset the timer
             }
             
             // display the angry cookie if it's visible
