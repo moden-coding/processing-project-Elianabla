@@ -86,8 +86,8 @@ public class App extends PApplet {
             text("Instructions: ", 290, 230);
             text("Click the cookies and work on \n upgrading them by using the \n upgrades bar on the right. \n Click on all of the angry cookies \n right away. Watch out!!",
                     200, 300);
-        } else if (scene == 1) { // changes to game scene
-            background(bgColor);
+        } else if (scene == 1) { //changes to game scene
+            background(bgColor); 
             image(currentImage, 175, 175, 200, 200);
             image(house, 20, 550, 40, 40);
             textSize(20);
@@ -187,7 +187,7 @@ public class App extends PApplet {
             score = score / 2; // if dont click on angry cookie and click elsewhere while its visable your
                                // score halfs
             score = Math.round(score * 100.0) / 100.0; // rounds the values
-            isAngryCookieVisible = false;
+            isAngryCookieVisible = false; // changes the angry cookie back to be not visable
         }
     }
 
